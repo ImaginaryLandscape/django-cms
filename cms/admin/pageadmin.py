@@ -1030,7 +1030,7 @@ class PageAdmin(ModelAdmin):
         if request.REQUEST.get('public', None):
             if not page.publisher_public_id:
                 raise Http404()
-            page = page.publisher_public
+#            page = page.publisher_public
         else:
             attrs += "&draft=1"
         language = request.REQUEST.get('language', None)
@@ -1040,9 +1040,15 @@ class PageAdmin(ModelAdmin):
         url = page.get_absolute_url(language) + attrs
         site = current_site(request)
 
-        if not site == page.site:
-            url = "http%s://%s%s" % ('s' if request.is_secure() else '',
+        # The following is currently not working, site is evaluating to page.site 
+        # in all cases
+        #        if not site == page.site:
+        #            url = "http%s://%s%s" % ('s' if request.is_secure() else '',
+        #            page.site.domain, url)
+
+        url = "http%s://%s%s" % ('s' if request.is_secure() else '',
             page.site.domain, url)
+
         return HttpResponseRedirect(url)
 
     @require_POST
