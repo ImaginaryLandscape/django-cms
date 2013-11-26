@@ -1041,8 +1041,13 @@ class PageAdmin(ModelAdmin):
         url = page.get_absolute_url(language) + attrs
         site = current_site(request)
 
-        if not site == page.site:
-            url = "http%s://%s%s" % ('s' if request.is_secure() else '',
+        # The following is currently not working, site is evaluating to page.site 
+        # in all cases
+        #        if not site == page.site:
+        #            url = "http%s://%s%s" % ('s' if request.is_secure() else '',
+        #            page.site.domain, url)
+
+        url = "http%s://%s%s" % ('s' if request.is_secure() else '',
             page.site.domain, url)
         return HttpResponseRedirect(url)
 
